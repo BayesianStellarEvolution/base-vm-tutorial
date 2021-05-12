@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BASE-9 Virtual Machine Appliance Tutorial</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+
+    <style>
+      div>ul>li {padding-top:0.5em;}
+      div>ul>li:first-of-type {padding-top:0em;}
+      body {font-size:11pt;}
+    </style>
+
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+      <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+        <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+      </symbol>
+    </svg>
+  </head>
+
+  <body>
+    <h1>BASE-9 Virtual Machine Appliance Tutorial</h1>
+    <p>These instructions are for use with VirtualBox. You may prefer to import the provided OVA file into some other virtualization software, in which case you will have to determine how to adapt the following installation and start up steps accordingly.</p>
+    
+    <div>
+      <h2>Installation &amp; setup</h2>
+      <ul>
+        <li>Get the installation files
+          <ul>
+            <li>Download the virtual machine appliance (OVA) file containing the BASE-9 VM image (<code>BASE-9_v2.0.ova</code>) from <a href="https://www.dropbox.com/s/2aj1emoj7dv8j1e/BASE-9_v2.0.ova?dl=1">Dropbox</a>. This is 1.2GB in size, so will take a while to transfer.</li>
+            <li>To ensure the integrity of the download, you can open a terminal window, type <code>shasum Downloads/BASE-9_v2.0.ova</code> (substituting whatever path you downloaded it to) and verify that the resulting checksum is <code>abe14e6be981b11c91e94efc743cba519881ec03</code>; if not, you should try downloading again.</li>
+            <li>Download the appropriate VirtualBox platform package for your operating system from <a href="https://www.virtualbox.org/wiki/Downloads">https://www.virtualbox.org/wiki/Downloads</a>. A checksum is also available on that page, which you can verify using <code>shasum -a 256 filename.dmg</code>.</li>
+          </ul>
+        </li>
+        <li>Install VirtualBox
+          <ul>
+            <li>Once the downloads are complete, go to <code>Downloads</code> and run the VirtualBox installer. Follow the instructions, entering your personal password when prompted to do so. Your administrator may have to perform this step, if you do not have software installation privileges.</li>
+          </ul>
+        </li>
+        <li>Import the VM image
+          <ul>
+            <li>
+              Ensure that you have more than 5GB of available disk space for the VM image in your home directory (if necessary, you may reclaim 1.2GB afterwards by deleting the OVA file).
+            </li>
+            <li>Start the &ldquo;VirtualBox&rdquo; application.</li>
+            <li>
+              <p>Go to <code>File</code> in the menu bar at the top of the screen, then <code>Import appliance</code>. Press the icon to the right of the <code>File</code> box, go to <code>Downloads</code> (or wherever you put the OVA file) and select <code>BASE-9_v2.0.ova</code>. Press <code>Continue</code> in the main window.</p>
+              
+              <div><img src="_images/file_menu.png" style="width:100%"/>
+                <small>The main VirtualBox Manager window and File menu.</small>
+              </div>
+                            
+              <p>Alternatively, double clicking on <code>BASE-9_v2.0.ova</code> in your file browser may open it in VirtualBox automatically, depending on your settings.</p>
+            </li>
+            <li>Accept the default settings.</li>
+            <li>Press <code>Import</code> and wait for the process to complete.</li>
+          </ul>
+        </li>
+        <li>Make sure <code>BASE-9</code> is selected on the left-hand side of the <code>Oracle VM VirtualBox Manager</code> window.
+        </li>
+        <li><em>Optional:</em> Configure a shared data directory<p>You may create a shared folder to transfer files to and from the virtual machine if you desire. Alternatively, you may use <code>scp</code> to copy files from your host machine to and from the virtual machine using SSH.</p>
+          <ul>
+            <li>Under your home directory (or another writeable location) on your host machine, create a subdirectory for exchanging data files between the host and the VM, e.g. <code>vm_transfer/</code>.</li>
+            <li>In the <code>Oracle VM VirtualBox Manager</code> window, press <code>Settings</code>, then <code>Shared Folders</code> in the top row of icons, then the <code>+</code> icon to the right of the main table. In the sub-window that pops up, set the <code>Folder Path</code> to the directory you created on the host machine (e.g. <code>/Users/&lt;username&gt;/vm_transfer</code>) and the <code>Mount Point</code> to <code>/home/base/vm_transfer</code> (or similar). Select the <code>Auto-mount</code> option (and <code>Make Permanent</code>, if you have it). Press <code>OK</code> and then <code>OK</code> again in the parent window.</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    
+    <div>
+      <h2 id="starting">Starting the VM &amp; logging in</h2>
+      <ul>
+        <li>Press the <code>Start</code> arrow at the top of the <code>Oracle VM VirtualBox Manager</code> window to turn on the VM. A console window will open and you will see the machine booting in it. You don&rsquo;t need to press anything when the boot menu briefly appears. Once the machine has finished booting, you should see a &ldquo;Welcome to the BASE-9 VM!&rdquo; banner with a login prompt underneath.
+
+          <div class="alert alert-warning d-flex align-items-center mt-3" role="alert">
+            <svg class="bi flex-shrink-0 me-3" width="24" height="24"><use xlink:href="#exclamation-triangle-fill"/></svg>
+            <div>
+              If your mouse pointer stops working, press the left <em>command</em> key to toggle off mouse/keyboard capture by the VM window.
+            </div>
+          </div>
+        </li>
+        <li>Note the login information shown in the banner in the console window. You may login using the console directly, a standalone SSH client such as PuTTY, or the SSH client in a terminal.
+        </li>
+      </ul>
+    </div>
+    
+    <div>
+      <h2>Using the VM</h2>
+      <p>
+        Move your photometry and other BASE-9 files to your shared folder (or copy using <code>scp</code>), then proceed as normal. <code>python</code> and <code>pip</code> are available, as are <code>nano</code> and <code>vi</code>. <code>sudo</code> access is enabled for the <code>base</code> account, so you can install any other tools you need using <code>apt</code>.
+      </p>
+    </div>
+    
+    <div>
+      <h2>Shutting down the VM</h2>
+      <p>
+        You can shut down the VM by clicking the close button (<img src="_images/close_button.png"/>) on the upper left of the console window, or from <code>Machine</code> in the menu bar. To shut it down completely, you can choose <code>Send the shutdown signal</code> / <code>ACPI shutdown</code>, or you can <code>Save the machine state</code> to resume later where you left off.
+      </p>
+    </div>
+
+    <div>
+      <h2>Recompiling the BASE-9 code</h2>
+      <p>
+        The BASE-9 code is provided in <code>/home/base/base-cpp</code> with binaries installed in <code>/home/base/base-cpp/bin</code>. You may update the code in an editor on the VM, copy new files onto the VM, or use <code>git</code> to push and pull changes. Once you have updated the code, run the following commands on the VM to update the binaries.
+      </p>
+      <pre><code>
+        cd /home/base/base-cpp/BUILD
+        make install
+      </code></pre>
+    </div>
+    
+    <div>
+      <h2>Other important notes</h2>
+      <ul>
+        <li>While the VM is running idle in the background, it will probably use a few percent of a CPU core, which may drain your laptop battery faster than usual.</li>
+        <li>If you delete the VM, you will likely lose all the files that were on it (except those in the shared directory).</li>
+      </ul>
+    </div>
+
+    <footer>
+      <small>This tutorial constitutes a derivative work based on the <a href="https://gemini-iraf-vm-tutorial.readthedocs.io/en/latest/index.html">Gemini IRAF VM tutorial</a> and is released under the terms of the <a href="https://creativecommons.org/publicdomain/zero/1.0/legalcode">CC0 1.0 Universal Public Domain Dedication</a>.</small>
+    </footer>
+  </body>
+</html>
