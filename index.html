@@ -29,8 +29,8 @@
       <ul>
         <li>Get the installation files
           <ul>
-            <li>Download the virtual machine appliance (OVA) file containing the BASE-9 VM image (<code>BASE-9_v2.3.ova</code>) from <a href="https://www.dropbox.com/s/4lstxs8nngyiqpm/BASE-9_v2.3.ova?dl=1">Dropbox</a>. This is 1.2GB in size, so will take a while to transfer.</li>
-            <li>To ensure the integrity of the download, you can open a terminal window, type <code>shasum Downloads/BASE-9_v2.3.ova</code> (substituting whatever path you downloaded it to) and verify that the resulting checksum is <code>d26802cb7e6a584b3d0901539f6a932bc0604776</code>; if not, you should try downloading again.</li>
+            <li>Download <a href="https://base-9-vm-images.s3.us-east-2.amazonaws.com/BASE-9.6.0_v1.0.ova">the virtual machine appliance (OVA) file containing the BASE-9 VM image</a> (<code>BASE-9.6.0_v1.0.ova</code>). This is 2.0GB in size, so will take a while to transfer.</li>
+            <li>To ensure the integrity of the download, you can open a terminal window, type, e.g., <code>shasum Downloads/BASE-9.6.0_v1.0.ova</code> (substituting whatever path you downloaded it to) and verify that the resulting checksum is <code>46F4816656CCF46C3C6B2CC57320BAF610ADAA0E</code>; if not, you should try downloading again.</li>
             <li>Download the appropriate VirtualBox platform package for your operating system from <a href="https://www.virtualbox.org/wiki/Downloads">https://www.virtualbox.org/wiki/Downloads</a>. A checksum is also available on that page, which you can verify using <code>shasum -a 256 filename.dmg</code>.</li>
           </ul>
         </li>
@@ -42,23 +42,23 @@
         <li>Import the VM image
           <ul>
             <li>
-              Ensure that you have more than 5GB of available disk space for the VM image in your home directory (if necessary, you may reclaim 1.2GB afterwards by deleting the OVA file).
+              Ensure that you have more than 5GB of available disk space for the VM image in your home directory (if necessary, you may reclaim 2.0GB afterwards by deleting the OVA file).
             </li>
             <li>Start the &ldquo;VirtualBox&rdquo; application.</li>
             <li>
-              <p>Go to <code>File</code> in the menu bar at the top of the screen, then <code>Import appliance</code>. Press the icon to the right of the <code>File</code> box, go to <code>Downloads</code> (or wherever you put the OVA file) and select <code>BASE-9_v2.3.ova</code>. Press <code>Continue</code> in the main window.</p>
+              <p>Go to <code>File</code> in the menu bar at the top of the screen, then <code>Import appliance</code>. Press the icon to the right of the <code>File</code> box, go to <code>Downloads</code> (or wherever you put the OVA file) and select <code>BASE-9.6.0_v1.0.ova</code>. Press <code>Continue</code> in the main window.</p>
               
               <div><img src="_images/file_menu.png" style="width:100%"/>
                 <small>The main VirtualBox Manager window and File menu.</small>
               </div>
                             
-              <p>Alternatively, double clicking on <code>BASE-9_v2.3.ova</code> in your file browser may open it in VirtualBox automatically, depending on your settings.</p>
+              <p>Alternatively, double clicking on <code>BASE-9.6.0_v1.0.ova</code> in your file browser may open it in VirtualBox automatically, depending on your settings.</p>
             </li>
             <li>Accept the default settings.</li>
             <li>Press <code>Import</code> and wait for the process to complete.</li>
           </ul>
         </li>
-        <li>Make sure <code>BASE-9</code> is selected on the left-hand side of the <code>Oracle VM VirtualBox Manager</code> window.
+        <li>Make sure <code>BASE-9.6.0_v1.0</code> is selected on the left-hand side of the <code>Oracle VM VirtualBox Manager</code> window.
         </li>
         <li><em>Optional:</em> Configure a shared data directory<p>You may create a shared folder to transfer files to and from the virtual machine if you desire. Alternatively, you may use <code>scp</code> to copy files from your host machine to and from the virtual machine using SSH.</p>
           <ul>
