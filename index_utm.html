@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BASE-9 Virtual Machine Tutorial</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+
+    <style>
+      div>ul>li {padding-top:0.5em;}
+      div>ul>li:first-of-type {padding-top:0em;}
+      body {font-size:11pt;}
+    </style>
+
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+      <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+        <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+      </symbol>
+    </svg>
+  </head>
+
+  <body>
+    <h1>BASE-9 Virtual Machine Tutorial</h1>
+    <p>These instructions are for use with UTM on Apple Silicon. You may prefer to import the provided files into some other qemu-based virtualization environment, in which case you will have to determine how to adapt the following installation and start up steps accordingly.</p>
+
+    <p>Alternatively, if you are not running a Mac M1, M2, or newer CPU; an image and instructions are available for Intel platforms utilizing VirtualBox.</p>
+    
+    <div>
+      <h2>Installation &amp; Setup</h2>
+      <ul>
+        <li>Get the installation files
+          <ul>
+            <li>Download <a href="https://base-9-vm-images.s3.us-east-2.amazonaws.com/BASE-9.6.0_v1.0.utm.zip">the zipped virtual machine (UTM) file containing the BASE-9 VM</a> (<code>BASE-9.6.0_v1.0.utm.zip</code>). This is 1.95GiB in size, so will take awhile to transfer.</li>
+            <li>To ensure the integrity of the download, you can open a terminal window, type, e.g., <code>shasum Downloads/BASE-9.6.0_v1.0.utm.zip</code> (substituting whatever path you downloaded it to) and verify that the resulting checksum is <code>8427ef503b884af33d123dd56b340f54a5d887fe</code>; if not, you should try downloading again.</li>
+          </ul>
+        </li>
+        <li>Download and install <a href="https://github.com/utmapp/UTM/releases/latest/download/UTM.dmg">UTM</a>.</li>
+        <li>Import the VM image
+          <ul>
+            <li>
+              Ensure that you have more than 2GB of available disk space for the VM image in your home directory (if necessary, you may reclaim 1.95GiB afterwards by deleting the ZIP file).
+            </li>
+            <li>
+              Click on <code>BASE-9.6.0_v1.0.utm.zip</code> in the Finder to unzip it.
+            </li>
+            <li>
+              Click on <code>BASE-9.6.0_v1.0.utm</code> in the Finder to import it to UTM.
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    
+    <div>
+      <h2 id="starting">Starting the VM &amp; logging in</h2>
+      <ul>
+        <li>Open UTM and start the VM by double clicking <code>BASE-9.6.0_v1.0</code> in the left side of the UTM window. A console window will open and you will see the machine booting in it. You don&rsquo;t need to press anything when the boot menu briefly appears. Once the machine has finished booting, you should see a &ldquo;Welcome to the BASE-9 VM!&rdquo; banner with a login prompt underneath.
+
+          <div class="alert alert-warning d-flex align-items-center mt-3" role="alert">
+            <svg class="bi flex-shrink-0 me-3" width="24" height="24"><use xlink:href="#exclamation-triangle-fill"/></svg>
+            <div>
+              If your mouse pointer stops working, press the <em>control</em> and <em>option</em> keys to toggle off mouse/keyboard capture by the VM window.
+            </div>
+          </div>
+        </li>
+        <li>Note the login information shown in the banner in the console window. You may login using the console directly or the SSH client in Terminal.
+        </li>
+      </ul>
+    </div>
+    
+    <div>
+      <h2>Using the VM</h2>
+      <p>
+        Move your photometry and other BASE-9 files to your shared folder (or copy using <code>scp</code>), then proceed as normal. <code>python</code> and <code>pip</code> are available, as are <code>nano</code> and <code>vi</code>. <code>sudo</code> access is enabled for the <code>base</code> account, so you can install any other tools you need using <code>apt</code>.
+      </p>
+    </div>
+    
+    <div>
+      <h2>Shutting down the VM</h2>
+      <p>
+        You can shut down the VM by clicking the close or power buttons on the upper left of the console window.
+      </p>
+    </div>
+
+    <div>
+      <h2>Recompiling the BASE-9 code</h2>
+      <p>
+        The BASE-9 code is provided in <code>/home/base/base-cpp</code> with binaries installed in <code>/usr/local/bin</code>. You may update the code in an editor on the VM, copy new files onto the VM, or use <code>git</code> to push and pull changes. Once you have updated the code, run the following commands on the VM to update the binaries.
+      </p>
+      <pre><code>
+        cd /home/base/base-cpp/BUILD
+        sudo make install
+      </code></pre>
+    </div>
+    
+    <div>
+      <h2>Other important notes</h2>
+      <ul>
+        <li>While the VM is running idle in the background, it will probably use a few percent of a CPU core, which may drain your laptop battery faster than usual.</li>
+        <li>If you delete the VM, you will lose all the files that were on it.</li>
+      </ul>
+    </div>
+
+    <footer>
+      <small>This tutorial constitutes a derivative work based on the <a href="https://gemini-iraf-vm-tutorial.readthedocs.io/en/latest/index.html">Gemini IRAF VM tutorial</a> and is released under the terms of the <a href="https://creativecommons.org/publicdomain/zero/1.0/legalcode">CC0 1.0 Universal Public Domain Dedication</a>.</small>
+    </footer>
+  </body>
+</html>
